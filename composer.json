@@ -1,0 +1,15 @@
+{
+  "name": "ksaurabhsinha/simple_mail_queue",
+  "description": "This is a simple implementation of a mail queue in PHP",
+
+  "authors": [
+    {
+      "name": "Kumar Saurabh Sinha",
+      "email": "sinha.ksaurabh@gmail.com"
+    }
+  ],
+
+  "require": {
+    "swiftmailer/swiftmailer": "@stable"
+  }
+}
