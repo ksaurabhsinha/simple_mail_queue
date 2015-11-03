@@ -8,5 +8,6 @@ corresponding to the emails to be sent. This implementation uses SWIFTMailer to 
 2. Update the proper configuration for the SMTP, DATABASE and Async Location in /config.php
 3. Make sure /applogs/ is a writable folder with proper permissions
 4. Import the SQL schema + data from  /sql/mail_queue.sql
+5. Create a vhost and mark it as the host for the async credentials
 
 In case of any other issue, please contact sinha.ksaurabh@gmail.com
