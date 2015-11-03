@@ -39,7 +39,7 @@ $asyncConfigArray = array('protocol' => '', // ssl:// for https
 
 /** ************* Start: Log Path ***************** */
 
-define('LOG_PATH', __DIR__ . '/logs/');     //Path to the Logs
+define('LOG_PATH', __DIR__ . '/applogs/');     //Path to the Logs
 
 define('EXCEPTION_PATH', LOG_PATH . 'app_error.log');   //Application Exceptions
 define('MAIL_ERROR', LOG_PATH . 'mail_error.log');      //Mail Errors
