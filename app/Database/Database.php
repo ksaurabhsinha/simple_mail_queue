@@ -1,8 +1,23 @@
 <?php
 
+/**
+ * Class Database
+ *
+ * This class implements the Database Interface and defines the connection and processing of data from database tables
+ *
+ * @package Database
+ * @author  Kumar Saurabh Sinha
+ * @version 1.0
+ *
+ */
+
 namespace Database;
 
+
 use \PDO;
+use \PDOException;
+use \Log;
+
 
 class Database implements DatabaseInterface
 {
@@ -16,6 +31,10 @@ class Database implements DatabaseInterface
     private $objConn;
 
 
+    /**
+     * initializes the credentials required to setup the database connection
+     * @param $credArray
+     */
     public function __construct($credArray)
     {
 
@@ -28,6 +47,10 @@ class Database implements DatabaseInterface
 
     }
 
+    /**
+     * Create the connection to the Database and returns
+     * @return bool|PDO
+     */
     public function getConnection()
     {
 
@@ -41,12 +64,21 @@ class Database implements DatabaseInterface
 
         } catch (PDOException $ex) {
 
-            //echo $ex->getMessage();
+            Log\Log::writeLog($ex->getMessage(), EXCEPTION_PATH);
+            return false;
+
         }
 
 
     }
 
+    /**
+     * Defines the way to get the data from the Database tables
+     * @param $query
+     * @param $queryParams
+     *
+     * @return bool
+     */
     public function getData($query, $queryParams)
     {
 
@@ -58,13 +90,20 @@ class Database implements DatabaseInterface
 
         } catch (PDOException $ex) {
 
-            //echo $ex->getMessage();
+            Log\Log::writeLog($ex->getMessage(), EXCEPTION_PATH);
+            return false;
         }
-        return false;
 
 
     }
 
+    /**
+     * Defines the way to update data in the database tables
+     * @param $query
+     * @param $queryParams
+     *
+     * @return bool
+     */
     public function updateData($query, $queryParams)
     {
 
@@ -72,6 +111,7 @@ class Database implements DatabaseInterface
             $this->objConn->beginTransaction();
 
             $stmt = $this->objConn->prepare($query);
+
             $stmt->execute($queryParams);
 
             $this->objConn->commit();
@@ -80,11 +120,9 @@ class Database implements DatabaseInterface
 
         } catch (PDOException $ex) {
             $this->objConn->rollBack();
-            //echo $ex->getMessage();
+            Log\Log::writeLog($ex->getMessage(), EXCEPTION_PATH);
+            return false;
         }
-
-        return false;
-
 
     }
 
