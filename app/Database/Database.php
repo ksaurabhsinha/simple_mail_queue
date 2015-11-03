@@ -2,7 +2,10 @@
 
 namespace Database;
 
-class Database implements DatabaseInterface {
+use \PDO;
+
+class Database implements DatabaseInterface
+{
 
     private $hostName;
     private $username;
@@ -13,7 +16,8 @@ class Database implements DatabaseInterface {
     private $objConn;
 
 
-    public function __construct($credArray) {
+    public function __construct($credArray)
+    {
 
         $this->hostName = $credArray['hostname'];
         $this->username = $credArray['username'];
@@ -24,25 +28,45 @@ class Database implements DatabaseInterface {
 
     }
 
-    public function getConnection() {
+    public function getConnection()
+    {
 
-        $this->objConn = new PDO('mysql:host=' . $this->hostName . ';dbname= ' . $this->dbName . ' ;charset=' . $this->charset, $this->username, $this->password);
-        $this->objConn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $this->objConn->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+        try {
 
-        return $this->objConn;
+            $this->objConn = new PDO('mysql:host=' . $this->hostName . ';dbname=' . $this->dbName . ';charset=' . $this->charset, $this->username, $this->password);
+            $this->objConn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->objConn->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
+            return $this->objConn;
+
+        } catch (PDOException $ex) {
+
+            //echo $ex->getMessage();
+        }
+
 
     }
 
-    public function getData($query, $queryParams) {
+    public function getData($query, $queryParams)
+    {
 
-        $stmt = $this->objConn->prepare($query);
-        $stmt->execute($queryParams);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        try {
+
+            $stmt = $this->objConn->prepare($query);
+            $stmt->execute($queryParams);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch (PDOException $ex) {
+
+            //echo $ex->getMessage();
+        }
+        return false;
+
 
     }
 
-    public function updateData($query, $queryParams) {
+    public function updateData($query, $queryParams)
+    {
 
         try {
             $this->objConn->beginTransaction();
@@ -51,12 +75,16 @@ class Database implements DatabaseInterface {
             $stmt->execute($queryParams);
 
             $this->objConn->commit();
-        } catch(PDOException $ex) {
+
+            return $stmt->rowCount();
+
+        } catch (PDOException $ex) {
             $this->objConn->rollBack();
             //echo $ex->getMessage();
         }
 
-        return $stmt->rowCount();
+        return false;
+
 
     }
 

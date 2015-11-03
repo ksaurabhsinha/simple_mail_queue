@@ -1,6 +1,6 @@
 <?php
 
-namespace Service;
+namespace Queue;
 
 interface ProcessQueueInterface {
 
@@ -8,6 +8,8 @@ interface ProcessQueueInterface {
 
     public function getLockedEmails($thisServerName);
 
-    public function updateProcessStatus($thisServerName);
+    public function updateProcessStatus($thisServerName, $maxNum);
+
+    public function initiateAsyncThread($threadArray, $dataArrayJSON);
 
 }

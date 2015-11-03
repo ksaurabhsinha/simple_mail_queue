@@ -2,8 +2,9 @@
 
 require_once('bootstrap.php');
 
-use Service as Service;
+use Queue as Queue;
 use Database as Database;
 
-$objDB = new Database\Database($dbCredArray);
-$objProcessQueue = new Service\ProcessQueue($objDB);
+$objDB = new Database\Database($dbCredArray); //Get the DB Object
+$objProcessQueue = new Queue\ProcessQueue($objDB); //Process Queue need DB for processing
+
